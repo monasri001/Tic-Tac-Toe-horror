@@ -1,0 +1,277 @@
+:root {
+    --bg-color: #050000;
+    --grid-color: rgba(60, 0, 0, 0.5);
+    --x-color: #ff0022;
+    --o-color: #aa0000;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: #fff;
+    font-family: 'Nosifer', cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background-image: radial-gradient(circle at center, #220000 0%, #000 100%);
+}
+
+.shake {
+    animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+h1 {
+    font-size: 3rem;
+    color: var(--x-color);
+    text-shadow: 0 0 20px var(--x-color);
+    margin-bottom: 20px;
+    letter-spacing: 5px;
+    text-align: center;
+}
+
+.glitch {
+    position: relative;
+}
+.glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 red;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 blue;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 4s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(10px, 9999px, 80px, 0); }
+    10% { clip: rect(98px, 9999px, 50px, 0); }
+    20% { clip: rect(50px, 9999px, 70px, 0); }
+    30% { clip: rect(20px, 9999px, 80px, 0); }
+    100% { clip: rect(10px, 9999px, 80px, 0); }
+}
+
+.mode-selector {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    z-index: 10;
+}
+
+.mode-btn {
+    background: rgba(10, 0, 0, 0.8);
+    color: #880000;
+    font-family: 'Creepster', cursive;
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    border: 1px solid #880000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px #ff0000;
+}
+
+.mode-btn:hover {
+    color: #ff0022;
+    border-color: #ff0022;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.mode-btn.active {
+    background: rgba(100, 0, 0, 0.3);
+    color: #ff0022;
+    border-color: #ff0022;
+    box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5), 0 0 10px rgba(255, 0, 0, 0.8);
+}
+
+.turn-indicator {
+    font-family: 'Creepster', cursive;
+    font-size: 1.5rem;
+    color: #ffcccc;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+    background-color: var(--grid-color);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.gooey-container {
+    filter: url('#goo'); /* Makes drips and shapes merge */
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #0a0000, #1a0000);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    /* overflow: visible for gooey filter to work outside boundaries if needed */
+    box-shadow: inset 0 0 10px #000;
+    transition: all 0.2s;
+}
+
+.cell:hover {
+    background: #2a0000;
+    box-shadow: 0 0 15px rgba(255,0,0,0.4), inset 0 0 15px #000;
+}
+
+/* Base X */
+.cell.x::before, .cell.x::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 18px;
+    background: var(--x-color);
+    border-radius: 50%; /* Gives rounded, watery pill shape */
+    box-shadow: inset 0 6px 6px rgba(255, 255, 255, 0.6), 0 0 15px var(--x-color), inset 0 -4px 6px rgba(0,0,0,0.5); /* Glossy liquid */
+}
+
+.cell.x::before {
+    animation: splatLine1 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+.cell.x::after {
+    animation: splatLine2 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: 0.15s;
+    opacity: 0;
+}
+
+@keyframes splatLine1 {
+    0% { transform: scale(0) rotate(45deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(45deg); opacity: 1; }
+    100% { transform: scale(1) rotate(45deg); opacity: 1; }
+}
+
+@keyframes splatLine2 {
+    0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(-45deg); opacity: 1; }
+    100% { transform: scale(1) rotate(-45deg); opacity: 1; }
+}
+
+/* Base O */
+.cell.o::before {
+    content: '';
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border: 16px solid var(--o-color);
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: inset 0 5px 10px rgba(255, 255, 255, 0.7), 0 0 20px var(--o-color), 0 5px 10px rgba(255, 255, 255, 0.6) inset; /* Double gloss */
+    animation: splatCircle 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes splatCircle {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Watery splats from JS */
+.drip {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    animation: dripAnim 1s ease-in forwards;
+}
+
+@keyframes dripAnim {
+    0% { transform: scale(1) translateY(0); opacity: 1; }
+    50% { transform: scale(0.8) translateY(30px); opacity: 0.8; }
+    100% { transform: scale(0) translateY(80px); opacity: 0; }
+}
+
+.status-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(10, 0, 0, 0.95);
+    padding: 40px;
+    border: 2px solid var(--x-color);
+    border-radius: 15px;
+    box-shadow: 0 0 40px var(--x-color);
+    text-align: center;
+    z-index: 20;
+    backdrop-filter: blur(5px);
+}
+
+.status-message.hidden {
+    display: none;
+    pointer-events: none;
+}
+
+.status-message h2 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--x-color);
+}
+
+.splatter-btn {
+    background: linear-gradient(180deg, #b00, #400);
+    color: white;
+    font-family: 'Creepster', cursive;
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6), inset 0 3px 6px rgba(255,255,255,0.4);
+    transition: all 0.2s;
+}
+
+.splatter-btn:hover {
+    background: linear-gradient(180deg, #e00, #600);
+    box-shadow: 0 0 25px rgba(255, 0, 0, 1), inset 0 3px 6px rgba(255,255,255,0.6);
+    transform: scale(1.05);
+}
