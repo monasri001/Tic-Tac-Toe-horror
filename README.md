@@ -28,7 +28,6 @@ A spine-chilling, horror-themed twist on the classic game of Tic Tac Toe. Featur
 No build steps, installations, or dependencies are required. 
 1. Clone this repository or download the project files.
 2. Open `index.html` in any modern web browser.
-3. Turn up your volume and claim some souls!
 
 ## Deployment 🚀
 This project requires no complex setups and operates fully client-side. It is currently deployed automatically via [Vercel](https://vercel.com/). You can host it on any static provider (GitHub Pages, Netlify, Cloudflare).
